@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<web-app version="3.0"
+  xmlns="http://java.sun.com/xml/ns/javaee"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
+
+  <servlet>
+     <servlet-name>Home</servlet-name>
+     <servlet-class>HomeServlet</servlet-class>
+  </servlet>
+
+   <servlet>
+      <servlet-name>PrinterStatus</servlet-name>
+      <servlet-class>PrinterStatusServlet</servlet-class>
+   </servlet>
+
+   <servlet>
+      <servlet-name>PrinterAlertServlet</servlet-name>
+      <servlet-class>PrinterAlertServlet</servlet-class>
+   </servlet>
+
+
+   <!-- Note: All <servlet> elements MUST be grouped together and
+         placed IN FRONT of the <servlet-mapping> elements -->
+
+  <servlet-mapping>
+    <servlet-name>Home</servlet-name>
+    <url-pattern>/</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>PrinterStatus</servlet-name>
+    <url-pattern>/status</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>PrinterAlertServlet</servlet-name>
+    <url-pattern>/printeralertconfig</url-pattern>
+  </servlet-mapping>
+
+</web-app>
