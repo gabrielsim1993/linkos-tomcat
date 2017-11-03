@@ -102,12 +102,7 @@ gson-2.1
 Use the following script or code to compile the relevant class files.
 
 ```
-javac -classpath .:/usr/local/Cellar/tomcat/8.5.23/libexec/lib/servlet-api.jar:/usr/local/Cellar/tomcat/8.5.23/libexec/webapps/workato/WEB-INF/lib/ZSDK_API.jar:/usr/local/Cellar/tomcat/8.5.23/libexec/lib/gson-2.6.2.jar HomeServlet.java
+javac -classpath .:/usr/local/Cellar/tomcat/8.5.23/libexec/lib/*:/usr/local/Cellar/tomcat/8.5.23/libexec/webapps/workato/WEB-INF/lib/ZSDK_API.jar *.java
 ```
 
-We have included the following paths into the compile path
-
-- PWD: `.`
-- Tomcat: `/usr/local/Cellar/tomcat/8.5.23/libexec/lib/servlet-api.jar`
-- LinkOS SDK: `/usr/local/Cellar/tomcat/8.5.23/libexec/webapps/workato/WEB-INF/lib/ZSDK_API.jar`
-- Google GSON: `/usr/local/Cellar/tomcat/8.5.23/libexec/lib/gson-2.6.2.jar`
+Or you could run `./compile.sh`.
