@@ -3,6 +3,7 @@ import java.util.*;
 import java.lang.*;
 
 import javax.servlet.*;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.*;
 import javax.net.ssl.HttpsURLConnection;
 import com.google.gson.Gson;
@@ -11,6 +12,7 @@ import java.net.URL;
 import com.zebra.sdk.comm.*;
 import com.zebra.sdk.printer.*;
 
+@MultipartConfig
 public class PrinterStatusServlet extends HttpServlet {
 
   private List<String> getIpAddressList(String ipAddresses) {
