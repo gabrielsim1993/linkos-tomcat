@@ -6,8 +6,11 @@ import javax.servlet.*;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.*;
 import javax.net.ssl.HttpsURLConnection;
-import com.google.gson.Gson;
 import java.net.URL;
+import java.net.URLDecoder;
+
+import com.google.gson.Gson;
+import org.apache.catalina.core.ApplicationPart;
 
 import com.zebra.sdk.comm.*;
 import com.zebra.sdk.printer.*;
@@ -98,22 +101,28 @@ public class PrinterStatusServlet extends HttpServlet {
       }
   }
 
-  //TODO: Implement POST endpoint direct from printer. 
-  // @Override
-  // public void doPost(HttpServletRequest request, HttpServletResponse response)
-  //   throws IOException, ServletException {
-  //     try {
-  //       HttpsURLConnection con = (HttpsURLConnection) WEBHOOK_URL.openConnection();
-  //       con.setRequestMethod("POST");
-  //       con.setDoOutput(true);
-  //       DataOutputStream wr = new DataOutputStream(con.getOutputStream());
-  //       wr.writeBytes(request);
-  //     } catch (Exception e) {
-  //       wr.writeBytes(request.toString());
-  //     } finally {
-  //       wr.flush();
-  //       wr.close();
-  //       con.closeConnection();
-  //     }
-  //   }
+  @Override
+  public void doPost(HttpServletRequest request, HttpServletResponse response)
+    throws IOException, ServletException {
+      String printerIpAddress = request.getHeader("Host");
+
+      ApplicationPart alertMsgPart = (ApplicationPart)request.getPart("alertMsg");
+      String alertMsg = URLDecoder.decode(alertMsgPart.getString("UTF-8"), "UTF-8");
+
+      ZebraPrinterStatus zbps = new ZebraPrinterStatus(printerIpAddress, true, alertMsg);
+      List<ZebraPrinterStatus> zbpsArray = new ArrayList<ZebraPrinterStatus>();
+      zbpsArray.add(zbps);
+      Gson gson = new Gson();
+      String output = gson.toJson(zbpsArray);
+
+      URL url = new URL(WEBHOOK_URL);
+      HttpsURLConnection con = (HttpsURLConnection)url.openConnection();
+      con.setRequestMethod("POST");
+      con.setDoOutput(true);
+      DataOutputStream wr = new DataOutputStream(con.getOutputStream());
+      wr.writeBytes(output);
+      wr.flush();
+      wr.close();
+      con.getResponseCode();
+    }
 }

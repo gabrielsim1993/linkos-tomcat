@@ -35,7 +35,7 @@
 
   <servlet-mapping>
     <servlet-name>PrinterAlertServlet</servlet-name>
-    <url-pattern>/printeralertconfig</url-pattern>
+    <url-pattern>/config</url-pattern>
   </servlet-mapping>
 
 </web-app>
