@@ -4,23 +4,23 @@ Interface with LinkOS-enabled Zebra printers via your local Tomcat server.
 ## Background
 We are attempting to connect to Zebra printers using a Tomcat server. Features at present include:
 
-- **Query status**: Query of printer status using SDK method `getPrinterStatus()` and supplied TCP/IP addresses.
-- **TODO** Multithread / promise query for the above.
-- **TODO** Open servlet POST endpoint to allow printer to communicate with server directly.
+1. **Query status**: Query of printer status using SDK method `getPrinterStatus()` and supplied TCP/IP addresses.
+2. **Send alert to HTTP webhook** Servlet POST endpoint to allow printer to send alerts using SDK method `configureAlerts()`.
+3. **TODO** Multithread / promise queries for the above.
 
-### Query status
+### 1. Query status
 By entering `http://localhost:port/servlet/get?ip=10.10.0.1,10.10.0.2` you should be returned with a JSON object with the following information:
 
 ```JSON
 [
   {
     "ipAddress": "10.10.0.1",
-    "hasError": false,
+    "hasError": true,
     "message": "Cannot Print because the printer is paused."
   },
   {
     "ipAddress": "10.10.0.2",
-    "hasError": true,
+    "hasError": false,
     "message": "Ready To Print."
   }
 ]
