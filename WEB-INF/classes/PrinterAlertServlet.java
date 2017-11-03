@@ -1,7 +1,7 @@
 import java.io.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
-import java.util.List;
+import java.util.*;
 
 import com.zebra.sdk.comm.ConnectionException;
 import com.zebra.sdk.comm.Connection;
@@ -32,8 +32,14 @@ public class PrinterAlertServlet extends HttpServlet {
       ZebraPrinterLinkOs linkOsPrinter = ZebraPrinterFactory.getLinkOsPrinter(connection);
       if (linkOsPrinter != null) {
         if (linkOsPrinter.getConfiguredAlerts().size() == 0) {
-          PrinterAlert setAlerts = new PrinterAlert(AlertCondition.ALL_MESSAGES, ALERT_DESTINATION, true, false, DESTINATION, 0, false);
-          linkOsPrinter.configureAlert(setAlerts);
+          List<PrinterAlert> configAlertList = new ArrayList<PrinterAlert>();
+          PrinterAlert alert1 = new PrinterAlert(AlertCondition.PRINTER_PAUSED, ALERT_DESTINATION, true, true, DESTINATION, 0, false);
+          configAlertList.add(alert1);
+          PrinterAlert alert2 = new PrinterAlert(AlertCondition.HEAD_OPEN, ALERT_DESTINATION, true, true, DESTINATION, 0, false);
+          configAlertList.add(alert2);
+
+          linkOsPrinter.configureAlerts(configAlertList);
+
           List<PrinterAlert> alerts = linkOsPrinter.getConfiguredAlerts();
           result += alerts.size() + " alerts set.\n";
           for (PrinterAlert thisAlert : alerts) {

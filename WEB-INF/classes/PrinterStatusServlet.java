@@ -104,20 +104,26 @@ public class PrinterStatusServlet extends HttpServlet {
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response)
     throws IOException, ServletException {
-      String printerIpAddress = request.getHeader("Host");
-
       ApplicationPart alertMsgPart = (ApplicationPart)request.getPart("alertMsg");
       String alertMsg = URLDecoder.decode(alertMsgPart.getString("UTF-8"), "UTF-8");
 
-      ZebraPrinterStatus zbps = new ZebraPrinterStatus(printerIpAddress, true, alertMsg);
-      List<ZebraPrinterStatus> zbpsArray = new ArrayList<ZebraPrinterStatus>();
-      zbpsArray.add(zbps);
+      ApplicationPart uniqueIdPart = (ApplicationPart)request.getPart("uniqueId");
+      String uniqueId = URLDecoder.decode(uniqueIdPart.getString("UTF-8"), "UTF-8");
+
+      // String printerIpAddress = request.getHeader("Host");
+      String printerIpAddress = uniqueId;
+
+      ZebraPrinterStatus zbps = new ZebraPrinterStatus(printerIpAddress, !alertMsg.contains("ALERT CLEARED"), alertMsg);
+      // List<ZebraPrinterStatus> zbpsArray = new ArrayList<ZebraPrinterStatus>();
+      // zbpsArray.add(zbps);
       Gson gson = new Gson();
-      String output = gson.toJson(zbpsArray);
+      String output = gson.toJson(zbps);
+      System.out.println(output);
 
       URL url = new URL(WEBHOOK_URL);
       HttpsURLConnection con = (HttpsURLConnection)url.openConnection();
       con.setRequestMethod("POST");
+      con.setRequestProperty("Content-Type", "application/json");
       con.setDoOutput(true);
       DataOutputStream wr = new DataOutputStream(con.getOutputStream());
       wr.writeBytes(output);
